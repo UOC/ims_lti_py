@@ -1,2 +1,2 @@
 lxml
-uoc-python-oauth2
+python-oauth2>=uocbeta
