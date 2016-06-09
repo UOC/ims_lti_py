@@ -9,8 +9,8 @@ class RequestValidatorMixin(object):
         super(RequestValidatorMixin, self).__init__()
 
         self.oauth_server = oauth2.Server()
-        signature_method = oauth2.SignatureMethod_HMAC_SHA1()
-        self.oauth_server.add_signature_method(signature_method)
+        self.signature_method = oauth2.SignatureMethod_HMAC_SHA1()
+        self.oauth_server.add_signature_method(self.signature_method)
         self.oauth_consumer = oauth2.Consumer(
             self.consumer_key, self.consumer_secret)
 
@@ -43,7 +43,8 @@ class RequestValidatorMixin(object):
             if handle_error:
                 return False
             else:
-                raise e
+                key, base = self.signature_method.signing_base(request, self.oauth_consumer, {})
+                raise Exception("Key: %s failed with signature %s" % (key, base) )
         # Signature was valid
         return True
 
