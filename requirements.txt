@@ -1,2 +1,2 @@
 lxml
-#python-oauth2
+uoc-python-oauth2
