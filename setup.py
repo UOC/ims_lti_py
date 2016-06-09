@@ -2,9 +2,15 @@ import sys
 
 from setuptools import setup, find_packages
 
+v = sys.version_info
+if v[:2] < (3, 0):
+    error = "ERROR: ims_lti_py requires Python version 3.0 or above."
+    print(error, file=sys.stderr)
+    sys.exit(1)
+
 setup_args = dict(
     name='ims_lti_py',
-    version='0.6',
+    version='0.7',
     description=('A Python library to help implement IMS '
                  'LTI tool consumers and providers'),
     author='Anson MacKeracher',
