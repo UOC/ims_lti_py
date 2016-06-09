@@ -1,2 +1,2 @@
 lxml
-python-oauth2>=uocbeta
+#python-oauth2 commented due that this egg refers to another library, not https://github.com/simplegeo/python-oauth2
