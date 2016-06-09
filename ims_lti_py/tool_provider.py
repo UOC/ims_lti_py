@@ -3,7 +3,8 @@ from .request_validator import (
     RequestValidatorMixin,
     FlaskRequestValidatorMixin,
     DjangoRequestValidatorMixin,
-    WebObRequestValidatorMixin
+    WebObRequestValidatorMixin,
+    TornadoRequestValidatorMixin
 )
 from .outcome_request import OutcomeRequest
 from collections import defaultdict
@@ -227,5 +228,11 @@ class FlaskToolProvider(FlaskRequestValidatorMixin, ToolProvider):
 class WebObToolProvider(WebObRequestValidatorMixin, ToolProvider):
     """
     OAuth Tool Provider that works with WebOb requests.
+    """
+    pass
+
+class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider):
+    """
+    OAuth ToolProvider that works with Tornado requests.
     """
     pass

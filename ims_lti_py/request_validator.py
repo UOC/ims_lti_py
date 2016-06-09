@@ -111,3 +111,17 @@ class WebObRequestValidatorMixin(RequestValidatorMixin):
                 request.headers,
                 request.POST.mixed())
 
+
+class TornadoRequestValidatorMixin(RequestValidatorMixin):
+    """
+    A mixin for OAuth request validation using Tornado
+    """
+
+    def parse_request(self, request, parameters=None, fake_method=None):
+        """
+        Parse Tornado request
+        """
+        return (request.request.method,
+                request.request.full_url(),
+                request.request.headers,
+                request.request.arguments.copy())
