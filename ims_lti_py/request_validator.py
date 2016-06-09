@@ -17,7 +17,7 @@ class RequestValidatorMixin(object):
     def is_valid_request(self, request, parameters={},
                          fake_method=None, handle_error=True):
         """
-        Validates an OAuth request using the python-oauth2 library:
+        Validates an OAuth request using the oauth2 library:
             https://github.com/simplegeo/python-oauth2
 
         """
@@ -124,4 +124,4 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
         return (request.request.method,
                 request.request.full_url(),
                 request.request.headers,
-                request.request.arguments.copy())
+                {key: request.get_argument(key) for key in request.request.arguments}.copy())
