@@ -45,7 +45,7 @@ class RequestValidatorMixin(object):
             else:
                 raise e
         except oauth2.Error as e:
-            key, base = self.signature_method.signing_base(request, self.oauth_consumer, {})
+            key, base = self.signature_method.signing_base(oauth_request, self.oauth_consumer, {})
             raise Exception("Key: %s failed with signature %s" % (key, base))
 
         # Signature was valid
