@@ -1,3 +1,2 @@
 lxml
-oauth==1.0.1
 oauth2
