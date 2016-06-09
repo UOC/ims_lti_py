@@ -1,12 +1,12 @@
 from collections import defaultdict
-from urllib2 import urlparse, unquote
+from urllib.parse import unquote
 
 import oauth2
 import time
 
-from launch_params import LaunchParamsMixin
-from request_validator import RequestValidatorMixin
-from utils import InvalidLTIConfigError, generate_identifier
+from .launch_params import LaunchParamsMixin
+from .request_validator import RequestValidatorMixin
+from .utils import InvalidLTIConfigError, generate_identifier
 
 accessors = [
     'consumer_key',
@@ -14,11 +14,12 @@ accessors = [
     'launch_url',
 ]
 
+
 class ToolConsumer(LaunchParamsMixin, RequestValidatorMixin, object):
     def __init__(self, consumer_key, consumer_secret, params = {}):
-        '''
+        """
         Create new ToolConsumer.
-        '''
+        """
         # Initialize all class accessors to None
         for opt in accessors:
             setattr(self, opt, None)
@@ -36,17 +37,17 @@ class ToolConsumer(LaunchParamsMixin, RequestValidatorMixin, object):
         self.process_params(params)
 
     def set_config(self, config):
-        '''
+        """
         Set launch data from a ToolConfig.
-        '''
+        """
         if self.launch_url == None:
             self.launch_url = config.launch_url
             self.custom_params.update(config.custom_params)
 
     def has_required_params(self):
-        '''
+        """
         Check if required parameters for a tool launch are set.
-        '''
+        """
         return self.consumer_key and\
                 self.consumer_secret and\
                 self.resource_link_id and\

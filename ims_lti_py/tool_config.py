@@ -1,7 +1,7 @@
 from collections import defaultdict
 from lxml import etree, objectify
 
-from utils import InvalidLTIConfigError
+from .utils import InvalidLTIConfigError
 
 accessors = [
         'title',
@@ -27,8 +27,9 @@ NSMAP = {
     'lticm': 'http://www.imsglobal.org/xsd/imslticm_v1p0',
     }
 
+
 class ToolConfig():
-    '''
+    """
     Object used to represent LTI configuration.
 
     Capable of creating and reading the Common Cartridge XML representation of
@@ -36,11 +37,11 @@ class ToolConfig():
         http://www.imsglobal.org/LTI/v1p1/ltiIMGv1p1.html#_Toc319560470
 
     TODO: Usage description
-    '''
+    """
     def __init__(self, **kwargs):
-        '''
+        """
         Create a new ToolConfig with the given options.
-        '''
+        """
         # Initialize all class accessors to None
         for opt in accessors:
             setattr(self, opt, None)
@@ -51,61 +52,61 @@ class ToolConfig():
                 else defaultdict(lambda: None)
 
         # Iterate over all provided options and save to class instance members
-        for (key, val) in kwargs.iteritems():
+        for (key, val) in kwargs.items():
             setattr(self, key, val)
 
     @staticmethod
     def create_from_xml(xml):
-        '''
+        """
         Create a ToolConfig from the given XML.
-        '''
+        """
         config = ToolConfig()
         config.process_xml(xml)
         return config 
 
     def set_custom_param(self, key, val):
-        '''
+        """
         Set a custom parameter to provided value.
-        '''
+        """
         self.custom_params[key] = val
 
     def get_custom_param(self, key):
-        '''
+        """
         Gets a custom parameter. It not yet set, returns None object.
-        '''
+        """
         return self.custom_params[key]
 
     def set_ext_params(self, ext_key, ext_params):
-        '''
+        """
         Set the extension parameters for a specific vendor.
-        '''
+        """
         self.extensions[ext_key] = ext_params
 
     def get_ext_params(self, ext_key):
-        '''
+        """
         Get extension paramaters for provided extension. It not set, returns None object.
-        '''
+        """
         return self.extensions[ext_key]
 
     def set_ext_param(self, ext_key, param_key, val):
-        '''
+        """
         Set the provided parameter in a set of extension parameters.
-        '''
+        """
         if not self.extensions[ext_key]:
             self.extensions[ext_key] = defaultdict(lambda: None)
         self.extensions[ext_key][param_key] = val
 
     def get_ext_param(self, ext_key, param_key):
-        '''
+        """
         Get specific param in set of provided extension parameters.
-        '''
+        """
         return self.extensions[ext_key][param_key] if self.extensions[ext_key]\
                 else None
 
     def process_xml(self, xml):
-        '''
+        """
         Parse tool configuration data out of the Common Cartridge LTI link XML.
-        '''
+        """
         root = objectify.fromstring(xml, parser = etree.XMLParser())
         # Parse all children of the root node
         for child in root.getchildren():
@@ -170,12 +171,12 @@ class ToolConfig():
                 self.set_ext_params(platform, properties)
 
     def recursive_options(self,element,params):
-        for key, val in params.iteritems():
+        for key, val in params.items():
             if isinstance(val, dict):
                 options_node = etree.SubElement(element,
                       '{%s}%s' %(NSMAP['lticm'], 'options'), name =
                       key)
-                for key, val in val.iteritems():
+                for key, val in val.items():
                     self.recursive_options(options_node,{key:val})
             else:
                 param_node = etree.SubElement(element, '{%s}%s'
@@ -183,9 +184,9 @@ class ToolConfig():
                 param_node.text = val
 
     def to_xml(self, opts = defaultdict(lambda: None)):
-        '''
+        """
         Generate XML from the current settings.
-        '''
+        """
         if not self.launch_url or not self.secure_launch_url:
             raise InvalidLTIConfigError('Invalid LTI configuration')
 

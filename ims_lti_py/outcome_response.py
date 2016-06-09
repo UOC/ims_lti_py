@@ -28,7 +28,7 @@ accessors = [
 
 
 class OutcomeResponse():
-    '''
+    """
     This class consumes & generates LTI Outcome Responses.
 
     Response documentation:
@@ -41,22 +41,22 @@ class OutcomeResponse():
     each will use it differently. TPs will use it to partse the result of an
     OutcomeRequest to the TC. A TC will use it to generate proper response XML
     to send back to a TP.
-    '''
+    """
     def __init__(self, **kwargs):
         # Initialize all class accessors to None
         for opt in accessors:
             setattr(self, opt, None)
 
         # Store specified options in our options member
-        for (key, val) in kwargs.iteritems():
+        for (key, val) in kwargs.items():
             setattr(self, key, val)
 
     @staticmethod
     def from_post_response(post_response, content):
-        '''
+        """
         Convenience method for creating a new OutcomeResponse from a response
         object.
-        '''
+        """
         response = OutcomeResponse()
         response.post_response = post_response
         response.response_code = post_response.status
@@ -82,9 +82,9 @@ class OutcomeResponse():
         return self.severity == 'error'
 
     def process_xml(self, xml):
-        '''
+        """
         Parse OutcomeResponse data form XML.
-        '''
+        """
         try:
             root = objectify.fromstring(xml)
             # Get message idenifier from header info
@@ -115,9 +115,9 @@ class OutcomeResponse():
             pass
 
     def generate_response_xml(self):
-        '''
+        """
         Generate XML based on the current configuration.
-        '''
+        """
         root = etree.Element(
             'imsx_POXEnvelopeResponse',
             xmlns='http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0')

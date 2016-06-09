@@ -3,8 +3,8 @@ from lxml import etree, objectify
 
 import oauth2
 
-from outcome_response import OutcomeResponse
-from utils import InvalidLTIConfigError
+from .outcome_response import OutcomeResponse
+from .utils import InvalidLTIConfigError
 
 REPLACE_REQUEST = 'replaceResult'
 DELETE_REQUEST = 'deleteResult'
@@ -25,7 +25,7 @@ accessors = [
 
 
 class OutcomeRequest():
-    '''
+    """
     Class for consuming & generating LTI Outcome Requests.
 
     Outcome Request documentation:
@@ -34,31 +34,31 @@ class OutcomeRequest():
     This class can be used both by Tool Providers and Tool Consumers, though
     they each use it differently. The TP will use it to POST an OAuth-signed
     request to the TC. A TC will use it to parse such a request from a TP.
-    '''
+    """
     def __init__(self, opts=defaultdict(lambda: None)):
         # Initialize all our accessors to None
         for accessor in accessors:
             setattr(self, accessor, None)
 
         # Store specified options in our accessors
-        for (key, val) in opts.iteritems():
+        for (key, val) in opts.items():
             setattr(self, key, val)
 
     @staticmethod
     def from_post_request(post_request):
-        '''
+        """
         Convenience method for creating a new OutcomeRequest from a request
         object.
 
         post_request is assumed to be a Django HttpRequest object
-        '''
+        """
         request = OutcomeRequest()
         request.post_request = post_request
         request.process_xml(post_request.data)
         return request
 
     def post_replace_result(self, score, result_data=None):
-        '''
+        """
         POSTs the given score to the Tool Consumer with a replaceResult.
 
         OPTIONAL:
@@ -68,7 +68,7 @@ class OutcomeRequest():
 
             'text' : str text
             'url' : str url
-        '''
+        """
         self.operation = REPLACE_REQUEST
         self.score = score
         self.result_data = result_data
@@ -87,44 +87,44 @@ class OutcomeRequest():
             return self.post_outcome_request()
 
     def post_delete_result(self):
-        '''
+        """
         POSTs a deleteRequest to the Tool Consumer.
-        '''
+        """
         self.operation = DELETE_REQUEST
         return self.post_outcome_request()
 
     def post_read_result(self):
-        '''
+        """
         POSTS a readResult to the Tool Consumer.
-        '''
+        """
         self.operation = READ_REQUEST
         return self.post_outcome_request()
 
     def is_replace_request(self):
-        '''
+        """
         Check whether this request is a replaceResult request.
-        '''
+        """
         return self.operation == REPLACE_REQUEST
 
     def is_delete_request(self):
-        '''
+        """
         Check whether this request is a deleteResult request.
-        '''
+        """
         return self.operation == DELETE_REQUEST
 
     def is_read_request(self):
-        '''
+        """
         Check whether this request is a readResult request.
-        '''
+        """
         return self.operation == READ_REQUEST
 
     def was_outcome_post_successful(self):
         return self.outcome_response and self.outcome_response.is_success()
 
     def post_outcome_request(self):
-        '''
+        """
         POST an OAuth signed request to the Tool Consumer.
-        '''
+        """
         if not self.has_required_attributes():
             raise InvalidLTIConfigError(
                 'OutcomeRequest does not have all required attributes')
@@ -144,11 +144,11 @@ class OutcomeRequest():
             normalize = http._normalize_headers
 
             def my_normalize(self, headers):
-                print("My Normalize", headers)
+                print(("My Normalize", headers))
                 ret = normalize(self, headers)
                 if 'authorization' in ret:
                     ret['Authorization'] = ret.pop('authorization')
-                print("My Normalize", ret)
+                print(("My Normalize", ret))
                 return ret
             http._normalize_headers = my_normalize
             monkey_patch_function = normalize
