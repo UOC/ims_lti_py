@@ -1,4 +1,5 @@
 import oauth2
+import oauth.oauth as oauth
 
 
 class RequestValidatorMixin(object):
@@ -8,9 +9,9 @@ class RequestValidatorMixin(object):
     def __init__(self):
         super(RequestValidatorMixin, self).__init__()
 
-        self.oauth_server = oauth2.Server()
-        signature_method = oauth2.SignatureMethod_HMAC_SHA1()
-        self.oauth_server.add_signature_method(signature_method)
+        self.oauth_server = oauth.OAuthServer()
+        self.oauth_server.add_signature_method(
+            oauth.OAuthSignatureMethod_HMAC_SHA1())
         self.oauth_consumer = oauth2.Consumer(
             self.consumer_key, self.consumer_secret)
 
@@ -30,16 +31,21 @@ class RequestValidatorMixin(object):
             method, url, headers, parameters = self.parse_request(
                 request, parameters, fake_method)
 
-            oauth_request = oauth2.Request.from_request(
+            oauth_request = oauth.OAuthRequest.from_request(
                 method,
                 url,
                 headers=headers,
                 parameters=parameters)
 
+            if not oauth_request:
+                if handle_error:
+                    return False
+                else:
+                    raise LTIException("OAuth error: Please check your key and secret")
             self.oauth_server.verify_request(
                 oauth_request, self.oauth_consumer, {})
 
-        except oauth2.MissingSignature as e:
+        except oauth.OAuthError as e:
             if handle_error:
                 return False
             else:
@@ -125,3 +131,11 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
                 request.request.full_url(),
                 request.request.headers,
                 request.request.arguments.copy())
+
+
+class LTIException(Exception):
+    """
+    Custom LTI exception for proper handling
+    of LTI specific errors
+    """
+    pass
