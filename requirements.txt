@@ -1,2 +1,2 @@
 lxml
-git+https://github.com/wndhydrnt/python-oauth2#egg=python-oauth2
+python-oauth2

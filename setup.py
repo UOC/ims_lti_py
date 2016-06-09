@@ -17,6 +17,7 @@ setup_args = dict(
     author_email='anson@tophatmonocle.com',
     url='https://github.com/tophatmonocle/ims_lti_py',
     packages=find_packages(),
+    dependency_links=["https://github.com/wndhydrnt/python-oauth2#egg=python-oauth2"],
     license='MIT License',
     keywords='lti',
     zip_safe=True,
