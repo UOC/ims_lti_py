@@ -123,16 +123,20 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
     A mixin for OAuth request validation using Tornado
     """
 
+    @staticmethod
+    def get_arguments(self, request):
+        params = {key: request.get_argument(key) for key in request.request.arguments}.copy()
+        params['oauth_signature'] = params['oauth_signature'].encode()
+        return params
+
     def parse_request(self, request, parameters=None, fake_method=None):
         """
         Parse Tornado request
         """
-        params = {key: request.get_argument(key) for key in request.request.arguments}.copy()
-        params['oauth_signature'] = params['oauth_signature'].encode()
         return (request.request.method,
                 request.request.full_url(),
                 request.request.headers,
-                params)
+                self.get_arguments())
 
 
 # class SignatureMethod_Binary_HMAC_SHA1(oauth2.SignatureMethod_HMAC_SHA1):
