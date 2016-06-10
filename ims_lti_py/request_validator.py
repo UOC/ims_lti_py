@@ -124,7 +124,7 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
     """
 
     @staticmethod
-    def get_arguments(self, request):
+    def get_arguments(request):
         params = {key: request.get_argument(key) for key in request.request.arguments}.copy()
         params['oauth_signature'] = params['oauth_signature'].encode()
         return params
