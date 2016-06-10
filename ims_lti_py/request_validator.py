@@ -136,7 +136,7 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
         return (request.request.method,
                 request.request.full_url(),
                 request.request.headers,
-                self.get_arguments())
+                self.get_arguments(request))
 
 
 # class SignatureMethod_Binary_HMAC_SHA1(oauth2.SignatureMethod_HMAC_SHA1):
