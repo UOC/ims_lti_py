@@ -9,8 +9,8 @@ class RequestValidatorMixin(object):
         super(RequestValidatorMixin, self).__init__()
 
         self.oauth_server = oauth2.Server()
-        # self.signature_method = oauth2.SignatureMethod_HMAC_SHA1()
-        self.signature_method = SignatureMethod_Binary_HMAC_SHA1()
+        self.signature_method = oauth2.SignatureMethod_HMAC_SHA1()
+        # self.signature_method = SignatureMethod_Binary_HMAC_SHA1()
         self.oauth_server.add_signature_method(self.signature_method)
         self.oauth_consumer = oauth2.Consumer(
             self.consumer_key, self.consumer_secret)
@@ -132,13 +132,13 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
         return (request.request.method,
                 request.request.full_url(),
                 request.request.headers,
-                {key: request.get_argument(key) for key in request.request.arguments}.copy())
+                params)
 
 
-class SignatureMethod_Binary_HMAC_SHA1(oauth2.SignatureMethod_HMAC_SHA1):
-
-    def check(self, request, consumer, token, signature):
-        """Returns whether the given signature is the correct signature for
-        the given consumer and token signing the given request."""
-        built = self.sign(request, consumer, token)
-        return built == signature.encode()
+# class SignatureMethod_Binary_HMAC_SHA1(oauth2.SignatureMethod_HMAC_SHA1):
+#
+#     def check(self, request, consumer, token, signature):
+#         """Returns whether the given signature is the correct signature for
+#         the given consumer and token signing the given request."""
+#         built = self.sign(request, consumer, token)
+#         return built == signature.encode()
