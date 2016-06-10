@@ -231,6 +231,7 @@ class WebObToolProvider(WebObRequestValidatorMixin, ToolProvider):
     """
     pass
 
+
 class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider):
     """
     OAuth ToolProvider that works with Tornado requests.
