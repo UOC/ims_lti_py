@@ -1,4 +1,4 @@
-from test_helper import create_test_tp
+from .test_helper import create_test_tp
 from ims_lti_py import OutcomeRequest
 
 import unittest

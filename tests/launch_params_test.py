@@ -1,4 +1,4 @@
-from test_helper import create_test_tp, create_test_tc, create_params_tp
+from .test_helper import create_test_tp, create_test_tc, create_params_tp
 
 import unittest
 
