@@ -10,7 +10,6 @@ class RequestValidatorMixin(object):
 
         self.oauth_server = oauth2.Server()
         self.signature_method = oauth2.SignatureMethod_HMAC_SHA1()
-        # self.signature_method = SignatureMethod_BASE64_HMAC_SHA1()
         self.oauth_server.add_signature_method(self.signature_method)
         self.oauth_consumer = oauth2.Consumer(
             self.consumer_key, self.consumer_secret)
@@ -127,19 +126,9 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
         """
         Parse Tornado request
         """
+        params = {key: request.get_argument(key) for key in request.request.arguments}.copy()
+        params['oauth_signature'] = params['oauth_signature'].encode()
         return (request.request.method,
                 request.request.full_url(),
                 request.request.headers,
                 {key: request.get_argument(key) for key in request.request.arguments}.copy())
-
-
-class SignatureMethod_BASE64_HMAC_SHA1(oauth2.SignatureMethod_HMAC_SHA1):
-    """
-    Base64 encoded HMAC + SHA1 Signature method
-    """
-
-    def signing_base(self, request, consumer, token):
-        key, base  = super(SignatureMethod_BASE64_HMAC_SHA1, self).signing_base(request, consumer, token)
-
-        """Remove last character of key"""
-        return key[:-1], base
