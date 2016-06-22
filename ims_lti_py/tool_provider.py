@@ -7,6 +7,7 @@ from .request_validator import (
     TornadoRequestValidatorMixin
 )
 from .outcome_request import OutcomeRequest
+from .session_store import TornadoSessionStoreMixin
 from collections import defaultdict
 import re
 from urllib.parse import urlencode
@@ -232,8 +233,25 @@ class WebObToolProvider(WebObRequestValidatorMixin, ToolProvider):
     pass
 
 
-class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider):
+class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSessionStoreMixin):
     """
     OAuth ToolProvider that works with Tornado requests.
     """
-    pass
+
+    def __init__(self, consumer_key, consumer_secret, params={}, request=None):
+        """ load context from session """
+        if request and self.load_context(request):
+            self.loaded_from_session = True
+            params = self.load_context(request)
+
+        super().__init__(consumer_key, consumer_secret, params)
+
+    def is_valid_request(self, request, parameters={}, fake_method=None, handle_error=True):
+        if self.loaded_from_session:
+            return True
+        valid = super().is_valid_request(request, parameters, fake_method, handle_error)
+
+        """ Save context to session if valid """
+        if valid:
+            self.save_context(request, self.params)
+        return valid
