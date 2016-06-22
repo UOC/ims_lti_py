@@ -239,6 +239,7 @@ class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSes
     """
 
     def __init__(self, consumer_key, consumer_secret, params={}, request=None):
+        self.loaded_from_session = False
         """ load context from session """
         if request and self.load_context(request):
             self.loaded_from_session = True
