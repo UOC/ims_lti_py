@@ -29,7 +29,7 @@ class TornadoSessionStoreMixin(SessionStoreMixin):
     A 'mixin' for LTI session storage using Tornado
     """
 
-    COOKIE_NAME = "LTI Context"
+    COOKIE_NAME = "LTIContext"
 
     def save_context(self, request, context):
         request.set_secure_cookie(self.COOKIE_NAME, json.dumps(context), 1)
