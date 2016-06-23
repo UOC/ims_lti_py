@@ -1,4 +1,4 @@
-import pickle
+import json
 
 
 class SessionStoreMixin(object):
@@ -32,11 +32,11 @@ class TornadoSessionStoreMixin(SessionStoreMixin):
     COOKIE_NAME = "LTI Context"
 
     def save_context(self, request, context):
-        request.set_secure_cookie(self.COOKIE_NAME, pickle.dumps(context), 1)
+        request.set_secure_cookie(self.COOKIE_NAME, json.dumps(context), 1)
 
     def load_context(self, request):
         context_as_string = request.get_secure_cookie(self.COOKIE_NAME)
         if context_as_string:
-            return pickle.loads(context_as_string)
+            return json.loads(context_as_string)
 
         return None
