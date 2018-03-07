@@ -28,7 +28,10 @@ class EncodedParamsMixin(object):
     def decode_params(self, params={}):
         decoded_params = params.copy()
         if params['custom_lti_message_encoded_base64'] == '1':
+            print('request is encoded!')
             for param in params:
+                print(param)
                 if not param in EXCLUDED_BASE64_PARAMETERS:
+                    print('param is encoded. decoding')
                     decoded_params[param] = base64.b64decode(param)
         return decoded_params
