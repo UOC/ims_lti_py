@@ -259,9 +259,9 @@ class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSes
         if valid:
             """ Check base 64 enconding """
             one = base64.b64encode(b"1")
-            if request.get_argument("custom_base64encoded") == one:
+            if request.get_argument("custom_base64encoded", "false").encode() == one:
                 for param in self.params:
-                    self.params[param] = base64.b64decode(self.params[param])
+                    self.params[param] = base64.b64decode(self.params[param].encode())
 
             self.save_context(request, self.params)
 
