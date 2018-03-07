@@ -1,5 +1,5 @@
 from collections import defaultdict
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 
 import oauth2
 import time
@@ -79,7 +79,7 @@ class ToolConsumer(LaunchParamsMixin, RequestValidatorMixin, object):
         params.update(self._params_update())
         params.update({'oauth_consumer_key': consumer.key})
 
-        uri = urlparse.urlparse(self.launch_url)
+        uri = urlparse(self.launch_url)
         if uri.query != '':
             for param in uri.query.split('&'):
                 key, val = param.split('=')
