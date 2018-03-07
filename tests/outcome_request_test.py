@@ -2,7 +2,7 @@ from .test_helper import create_test_tp
 from ims_lti_py import OutcomeRequest
 
 import unittest
-import oauth2
+import oauth1
 
 class MockResponse(object):
     def __init__(self):
@@ -12,7 +12,7 @@ class MockResponse(object):
 # Fake OAuth requests
 def stubify(arg0, arg1, method = None, body = None, headers = None):
     return (MockResponse(), '<xml/>')
-oauth2.Client.request = stubify
+oauth1.Client.request = stubify
 
 class TestOutcomeRequest(unittest.TestCase):
     def setUp(self):

@@ -10,12 +10,12 @@ if v[:2] < (3, 0):
 
 setup_args = dict(
     name='ims_lti_py',
-    version='0.7',
+    version='0.7.1',
     description=('A Python library to help implement IMS '
                  'LTI tool consumers and providers'),
     author='Anson MacKeracher',
     author_email='anson@tophatmonocle.com',
-    url='https://github.com/tophatmonocle/ims_lti_py',
+    url='https://github.com/uoc/ims_lti_py',
     packages=find_packages(),
     license='MIT License',
     keywords='lti',

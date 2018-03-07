@@ -7,7 +7,7 @@ class DontTestLaunchParams():
         '''
         Should process parameters.
         '''
-        for (key, val) in self.params.iteritems():
+        for (key, val) in list(self.params.items()):
             if not 'custom_' in key\
                     and not 'ext_' in key\
                     and not 'roles' in key:

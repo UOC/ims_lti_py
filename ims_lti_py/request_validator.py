@@ -1,6 +1,5 @@
 from builtins import object
-import oauth2
-
+import oauth1
 
 class RequestValidatorMixin(object):
     '''
@@ -9,30 +8,31 @@ class RequestValidatorMixin(object):
     def __init__(self):
         super(RequestValidatorMixin, self).__init__()
 
-        self.oauth_server = oauth2.Server()
-        #self.signature_method = oauth2.SignatureMethod_HMAC_SHA1()
+        self.oauth_server = oauth1.Server()
+        #self.signature_method = oauth1.SignatureMethod_HMAC_SHA1()
         self.signature_method = SignatureMethod_Binary_HMAC_SHA1()
         self.oauth_server.add_signature_method(self.signature_method)
-        self.oauth_consumer = oauth2.Consumer(
+        self.oauth_consumer = oauth1.Consumer(
             self.consumer_key, self.consumer_secret)
 
     def is_valid_request(self, request, parameters={},
                          fake_method=None, handle_error=True):
         '''
-        Validates an OAuth request using the python-oauth2 library:
-            https://github.com/simplegeo/python-oauth2
+        Validates an OAuth request using the python-oauth1 library:
+            https://github.com/UOC/python-oauth2
 
         '''
         try:
             # Set the parameters to be what we were passed earlier
             # if we didn't get any passed to us now
+
             if not parameters and hasattr(self, 'params'):
                 parameters = self.params
 
             method, url, headers, parameters = self.parse_request(
                 request, parameters, fake_method)
 
-            oauth_request = oauth2.Request.from_request(
+            oauth_request = oauth1.Request.from_request(
                 method,
                 url,
                 headers=headers,
@@ -41,12 +41,12 @@ class RequestValidatorMixin(object):
             self.oauth_server.verify_request(
                 oauth_request, self.oauth_consumer, {})
 
-        except oauth2.MissingSignature as e:
+        except oauth1.MissingSignature as e:
             if handle_error:
                 return False
             else:
                 raise e
-        except oauth2.Error as e:
+        except oauth1.Error as e:
             key, base = self.signature_method.signing_base(oauth_request, self.oauth_consumer, {})
             sign = self.signature_method.sign(oauth_request, self.oauth_consumer, {})
             raise Exception("signature: %s failed with param %s with base string %s" % (sign, oauth_request.get('oauth_signature'), base))
@@ -134,7 +134,7 @@ class TornadoRequestValidatorMixin(RequestValidatorMixin):
                 {key: request.get_argument(key) for key in request.request.arguments}.copy())
 
 
-class SignatureMethod_Binary_HMAC_SHA1(oauth2.SignatureMethod_HMAC_SHA1):
+class SignatureMethod_Binary_HMAC_SHA1(oauth1.SignatureMethod_HMAC_SHA1):
 
     def check(self, request, consumer, token, signature):
         """Returns whether the given signature is the correct signature for

@@ -1,7 +1,7 @@
 from collections import defaultdict
 from urllib.parse import unquote, urlparse
 
-import oauth2
+import oauth1
 import time
 
 from .launch_params import LaunchParamsMixin
@@ -73,7 +73,7 @@ class ToolConsumer(LaunchParamsMixin, RequestValidatorMixin, object):
         params['lti_message_type'] = 'basic-lti-launch-request'
 
         # Get new OAuth consumer
-        consumer = oauth2.Consumer(key = self.consumer_key,\
+        consumer = oauth1.Consumer(key = self.consumer_key,\
                 secret = self.consumer_secret)
 
         params.update(self._params_update())
@@ -86,11 +86,11 @@ class ToolConsumer(LaunchParamsMixin, RequestValidatorMixin, object):
                 if params.get(key) == None:
                     params[key] = str(val)
 
-        request = oauth2.Request(method = 'POST', 
+        request = oauth1.Request(method = 'POST',
                 url = self.launch_url,
                 parameters = params)
 
-        signature_method = oauth2.SignatureMethod_HMAC_SHA1()
+        signature_method = oauth1.SignatureMethod_HMAC_SHA1()
         request.sign_request(signature_method, consumer, None)
 
         # Request was made by an HTML form in the user's browser.

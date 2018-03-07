@@ -1,7 +1,7 @@
 from collections import defaultdict
 from lxml import etree, objectify
 
-import oauth2
+import oauth1
 
 from .outcome_response import OutcomeResponse
 from .utils import InvalidLTIConfigError
@@ -129,10 +129,10 @@ class OutcomeRequest():
             raise InvalidLTIConfigError(
                 'OutcomeRequest does not have all required attributes')
 
-        consumer = oauth2.Consumer(key=self.consumer_key,
+        consumer = oauth1.Consumer(key=self.consumer_key,
                                    secret=self.consumer_secret)
 
-        client = oauth2.Client(consumer)
+        client = oauth1.Client(consumer)
         # monkey_patch_headers ensures that Authorization
         # header is NOT lower cased
         monkey_patch_headers = True
