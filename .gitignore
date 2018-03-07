@@ -3,3 +3,4 @@ tags
 build/
 dist/
 *.egg-info/
+venv/
