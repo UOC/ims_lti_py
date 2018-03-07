@@ -4,6 +4,7 @@ import base64
 EXCLUDED_BASE64_PARAMETERS = [
     'lti_version',
     'lti_message_type',
+    'tool_consumer_instance_name',
     'tool_consumer_instance_description',
     'tool_consumer_instance_guid',
     'oauth_consumer_key',
