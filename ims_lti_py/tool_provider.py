@@ -8,11 +8,11 @@ from .request_validator import (
     WebObRequestValidatorMixin,
     TornadoRequestValidatorMixin
 )
+from .encoded_params import EncodedParamsMixin
 from .outcome_request import OutcomeRequest
 from .session_store import TornadoSessionStoreMixin
 from collections import defaultdict
 import re
-import base64
 from urllib.parse import urlencode
 from urllib.parse import urlsplit, urlunsplit
 
@@ -236,7 +236,7 @@ class WebObToolProvider(WebObRequestValidatorMixin, ToolProvider):
     pass
 
 
-class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSessionStoreMixin):
+class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSessionStoreMixin, EncodedParamsMixin):
     """
     OAuth ToolProvider that works with Tornado requests.
     """
@@ -257,14 +257,7 @@ class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSes
 
         """ Save context to session if valid """
         if valid:
-            """ Check base 64 enconding """
-            one = base64.b64encode(b"1")
-            if request.get_argument("custom_base64encoded", "false").encode() == one:
-                for param in self.params:
-                    print(param)
-                    print(self.params[param])
-                    self.params[param] = base64.b64decode(self.params[param])
-
+            self.params = self.decode_params(self.params)
             self.save_context(request, self.params)
 
         return valid
