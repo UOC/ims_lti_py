@@ -9,8 +9,8 @@ class RequestValidatorMixin(object):
         super(RequestValidatorMixin, self).__init__()
 
         self.oauth_server = oauth1.Server()
-        #self.signature_method = oauth1.SignatureMethod_HMAC_SHA1()
-        self.signature_method = SignatureMethod_Binary_HMAC_SHA1()
+        self.signature_method = oauth1.SignatureMethod_HMAC_SHA1()
+        #self.signature_method = SignatureMethod_Binary_HMAC_SHA1()
         self.oauth_server.add_signature_method(self.signature_method)
         self.oauth_consumer = oauth1.Consumer(
             self.consumer_key, self.consumer_secret)
