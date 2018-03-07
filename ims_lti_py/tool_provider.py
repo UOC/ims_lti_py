@@ -258,6 +258,7 @@ class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSes
         """ Save context to session if valid """
         if valid:
             self.params = self.decode_params(self.params)
+            self.process_params(self.params)
             self.save_context(request, self.params)
 
         return valid
