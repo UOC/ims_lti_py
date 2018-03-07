@@ -22,6 +22,7 @@ EXCLUDED_BASE64_PARAMETERS = [
     'ext_ims_lis_memberships_id',
     'ext_ims_lis_basic_outcome_url',
     'ext_ims_lti_tool_setting_url',
+    'ext_basiclti_submit',
     'launch_presentation_return_url'
 ]
 
