@@ -12,6 +12,7 @@ from .outcome_request import OutcomeRequest
 from .session_store import TornadoSessionStoreMixin
 from collections import defaultdict
 import re
+import base64
 from urllib.parse import urlencode
 from urllib.parse import urlsplit, urlunsplit
 
@@ -256,5 +257,11 @@ class TornadoToolProvider(TornadoRequestValidatorMixin, ToolProvider, TornadoSes
 
         """ Save context to session if valid """
         if valid:
+            """ Check base 64 enconding """
+            if request.get_argument("base64Encoded") == "1":
+                for param in self.params:
+                    self.params[param] = base64.b64decode(self.params[param])
+
             self.save_context(request, self.params)
+
         return valid
