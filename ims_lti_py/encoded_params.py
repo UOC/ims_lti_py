@@ -33,5 +33,5 @@ class EncodedParamsMixin(object):
                 print(param)
                 if not param in EXCLUDED_BASE64_PARAMETERS:
                     print('param is encoded. decoding')
-                    decoded_params[param] = base64.b64decode(param)
+                    decoded_params[param] = base64.b64decode(params[param])
         return decoded_params
