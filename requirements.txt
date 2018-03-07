@@ -1,2 +1,2 @@
 lxml
-git+https://github.com/UOC/python-oauth2.git#egg=oauth1
+-e git+https://github.com/UOC/python-oauth2.git#egg=oauth1
